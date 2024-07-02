@@ -6,9 +6,10 @@ app = Flask(__name__)
 @app.route('/api/hello', methods=['GET'])
 def hello():
     visitor_name = request.args.get('visitor_name')
-    client_ip = request.remote_addr
+    
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0]
 
-    # get location and weather
+    # Get location and weather
     weather_api_key = 'd2680916d9ed46a8b11211922240107'
     geolocation_api_key = 'd8e0ab874e20453a8ce4a790216e9d36'
 
@@ -20,11 +21,11 @@ def hello():
     weather = get_weather.json()
     temp = weather['current']['temp_c']
 
-    #response in json
+    # Response in JSON
     response = {
         'client_ip': client_ip,
         'location': city,
-        'greeting': f'Hello, {visitor_name}!, the temperature is {temp} degrees Celsius in {city}'
+        'greeting': f'Hello, {visitor_name}! The temperature is {temp} degrees Celsius in {city}.'
     }
 
     return jsonify(response)
