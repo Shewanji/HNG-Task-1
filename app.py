@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/api/hello', methods=['GET'])
 def hello():
-    visitor_name = request.args.get('visitor_name', 'Guest')
+    visitor_name = request.args.get('visitor_name')
     client_ip = request.remote_addr
 
     # get location and weather using WeatherApi
@@ -13,7 +13,7 @@ def hello():
     get_location = requests.get(f'http://api.weatherapi.com/v1/ip.json?key={ip_api_key}&q={client_ip}')
 
     location = get_location.json()
-    city = location.get('city', 'Current')
+    city = location.get('city')
 
     get_weather = requests.get(f'http://api.weatherapi.com/v1/current.json?key={ip_api_key}&q={city}')
 
