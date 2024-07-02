@@ -8,15 +8,15 @@ def hello():
     visitor_name = request.args.get('visitor_name')
     client_ip = request.remote_addr
 
-    # get location and weather using WeatherApi
-    ip_api_key = 'd2680916d9ed46a8b11211922240107'
-    get_location = requests.get(f'http://api.weatherapi.com/v1/ip.json?key={ip_api_key}&q={client_ip}')
+    # get location and weather
+    weather_api_key = 'd2680916d9ed46a8b11211922240107'
+    geolocation_api_key = 'd8e0ab874e20453a8ce4a790216e9d36'
 
+    get_location = requests.get(f"https://api.ipgeolocation.io/ipgeo?apiKey={geolocation_api_key}")
     location = get_location.json()
     city = location.get('city')
 
-    get_weather = requests.get(f'http://api.weatherapi.com/v1/current.json?key={ip_api_key}&q={city}')
-
+    get_weather = requests.get(f'http://api.weatherapi.com/v1/current.json?key={weather_api_key}&q={city}')
     weather = get_weather.json()
     temp = weather['current']['temp_c']
 
